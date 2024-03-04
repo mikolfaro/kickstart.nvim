@@ -4,14 +4,6 @@
 -- See the kickstart.nvim README for more information
 return {
 
-  { -- Theme
-    'doums/darcula',
-    config = function()
-      -- Load the color scheme
-      vim.cmd.colorscheme 'darcula'
-    end,
-  },
-
   { -- Autosave
     'pocco81/auto-save.nvim',
     config = function()
@@ -19,5 +11,17 @@ return {
         debounce_delay = 500,
       }
     end,
+  },
+
+  { -- Darcula Theme
+    'doums/darcula',
+    config = function()
+      -- Load the color scheme
+      vim.cmd.colorscheme 'darcula'
+    end,
+  },
+
+  { -- Fugitive
+    'tpope/vim-fugitive',
   },
 }
