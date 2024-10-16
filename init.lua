@@ -232,7 +232,9 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  -- { -- Detect tabstop and shiftwidth automatically
+  --   'tpope/vim-sleuth',
+  -- },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -659,7 +661,7 @@ require('lazy').setup({
           'intelephense',
           'solargraph',
           'tailwindcss',
-          'tsserver',
+          'ts_ls',
           'volar',
         },
         handlers = {
@@ -962,6 +964,9 @@ require('lazy').setup({
     },
   },
 })
+
+vim.o.expandtab = true
+vim.o.shiftwidth = 4
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
