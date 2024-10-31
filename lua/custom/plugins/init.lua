@@ -39,4 +39,7 @@ return {
   --   end,
   -- }
 
+  { -- Side by side diff view
+    'sindrets/diffview.nvim'
+  }
 }
