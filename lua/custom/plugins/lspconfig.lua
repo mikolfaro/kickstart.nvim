@@ -4,25 +4,49 @@
 return { -- Lsp config
     {
         'neovim/nvim-lspconfig',
+        dependencies = { "pmizio/typescript-tools.nvim" },
+
         config = function ()
             local lspconfig = require "lspconfig"
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local servers = {
+                "lua_ls", -- TODO expand configs https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#lua_ls
+                "rust_analyzer",
+            }
 
-            lspconfig.ts_ls.setup {
+            for _, lsp in ipairs(servers) do
+                lspconfig[lsp].setup({
+                    capabilities = capabilities,
+                })
+            end
+
+            lspconfig.ts_ls.setup{
                 init_options = {
-                    plugins = { -- I think this was my breakthrough that made it work
+                    plugins = {
                         {
                             name = "@vue/typescript-plugin",
-                            location = "~/.nvm/versions/node/v22.5.1/lib/node_modules/@vue/language-server",
-                            -- npm install -g @vue/typescript-plugin @vue/language-server
-                            -- npm root -g
-                            languages = { "vue" },
+                            -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
+                            location = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/@vue/typescript-plugin",
+                            languages = {"javascript", "typescript", "vue"},
                         },
                     },
                 },
-                filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+                filetypes = {
+                    "javascript",
+                    "typescript",
+                    "vue",
+                },
             }
 
-            lspconfig.volar.setup {}
+            -- npm install -g @vue/language-server
+            lspconfig.volar.setup{
+                filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+                init_options = {
+                    typescript = {
+                        tsdk = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/typescript/lib"
+                    }
+                }
+            }
         end
     }
 }
