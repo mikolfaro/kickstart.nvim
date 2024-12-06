@@ -15,6 +15,7 @@ return { -- Lsp config
                 "lua_ls", -- TODO expand configs https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#lua_ls
                 -- rustup component add rust-analyzer
                 "rust_analyzer",
+                -- rustup component add rust-analyzer
             }
 
             for _, lsp in ipairs(servers) do
