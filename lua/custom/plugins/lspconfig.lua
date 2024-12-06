@@ -10,7 +10,10 @@ return { -- Lsp config
             local lspconfig = require "lspconfig"
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
+                -- npm install -g intelephense
+                "intelephense",
                 "lua_ls", -- TODO expand configs https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#lua_ls
+                -- rustup component add rust-analyzer
                 "rust_analyzer",
             }
 
