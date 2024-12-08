@@ -2,4 +2,22 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
-return {}
+return {
+
+  { -- Theme
+    'doums/darcula',
+    config = function()
+      -- Load the color scheme
+      vim.cmd.colorscheme 'darcula'
+    end,
+  },
+
+  { -- Autosave
+    'pocco81/auto-save.nvim',
+    config = function()
+      require('auto-save').setup {
+        debounce_delay = 500,
+      }
+    end,
+  },
+}
