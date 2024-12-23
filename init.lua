@@ -171,7 +171,7 @@ vim.keymap.set('n', '<leader>pv', vim.cmd.Ex, { desc = 'Show current [p]ath [v]i
 -- In same window
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 -- Global
-vim.keymap.set('n','<C-q>', vim.diagnostic.setqflist, { desc = 'Open global diagnostic [Q]uickfix list' })
+-- vim.keymap.set('n','<C-q>', vim.diagnostic.setqflist, { desc = 'Open global diagnostic [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -959,7 +959,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -992,9 +992,6 @@ require('lazy').setup({
     },
   },
 })
-
-vim.o.expandtab = true
-vim.o.shiftwidth = 4
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
