@@ -182,10 +182,10 @@ vim.keymap.set('n','<C-q>', vim.diagnostic.setqflist, { desc = 'Open global diag
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -657,6 +657,67 @@ require('lazy').setup({
             },
           },
         },
+
+        phpactor = {
+          cmd = { "phpactor", "language-server" },
+        },
+
+        rust_analyzer = {
+          -- rustup component add rust-analyzer
+        },
+
+        tailwindcss = {
+          -- npm install -g @tailwindcss/language-server
+          tailwindCSS = {
+            classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
+            includeLanguages = {
+              eelixir = "html-eex",
+              eruby = "erb",
+              htmlangular = "html",
+              templ = "html",
+              volar = "vue",
+            },
+            lint = {
+              cssConflict = "warning",
+              invalidApply = "error",
+              invalidConfigPath = "error",
+              invalidScreen = "error",
+              invalidTailwindDirective = "error",
+              invalidVariant = "error",
+              recommendedVariantOrder = "warning"
+            },
+            validate = true
+          }
+        },
+
+        ts_ls = {
+          init_options = {
+            plugins = {
+              {
+                name = "@vue/typescript-plugin",
+                -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
+                location = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/@vue/typescript-plugin",
+                languages = {"javascript", "typescript", "vue"},
+              },
+            },
+          },
+          filetypes = {
+            "javascript",
+            "typescript",
+            "vue",
+          },
+        },
+
+        volar = {
+          -- npm install -g @vue/language-server
+          filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+          init_options = {
+            typescript = {
+              tsdk = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/typescript/lib"
+            }
+          }
+        }
+
       }
 
       -- Ensure the servers and tools above are installed
