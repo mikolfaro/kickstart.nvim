@@ -33,6 +33,13 @@ return {
     'tpope/vim-fugitive',
   },
 
+  { -- Improvements on quickfix buffer
+    'romainl/vim-qf',
+    -- config = function()
+    --   require('vim-qf')
+    -- end,
+  },
+
   -- { -- Parrot
   --   'frankroeder/parrot.nvim',
   --   dependencies = { 'ibhagwan/fzf-lua', 'nvim-lua/plenary.nvim' },
