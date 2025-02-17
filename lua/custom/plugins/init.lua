@@ -56,5 +56,12 @@ return {
 
   { -- Side by side diff view
     'sindrets/diffview.nvim'
-  }
+  },
+
+  -- {
+  --   dir = "~/workspace_spikes/present.nvim",
+  --   config = function ()
+  --     require "present"
+  --   end
+  -- }
 }
