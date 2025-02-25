@@ -700,7 +700,7 @@ require('lazy').setup({
               {
                 name = "@vue/typescript-plugin",
                 -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
-                location = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/@vue/typescript-plugin",
+                location = os.getenv("NVM_BIN") .. "/../lib/node_modules/@vue/typescript-plugin",
                 languages = {"javascript", "typescript", "vue"},
               },
             },
