@@ -986,7 +986,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 
+      ensure_installed = {
         'bash', 'c', 'css', 'diff', 'html', 'javascript', 'lua', 'luadoc', 
         'markdown', 'markdown_inline', 'query', 'scss', 'typescript', 'vim',
         'vimdoc', 'vue'
@@ -1008,6 +1008,26 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+    config = function(plug, config)
+      -- https://github.com/EmranMR/tree-sitter-blade/discussions/19
+      local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+      parser_config.blade = {
+        install_info = {
+          url = "https://github.com/EmranMR/tree-sitter-blade",
+          files = {"src/parser.c"},
+          branch = "main",
+        },
+        filetype = "blade"
+      }
+
+      vim.filetype.add({
+        pattern = {
+          ['.*%.blade%.php'] = 'blade',
+        }
+      })
+
+      require(plug.main).setup(config);
+    end,
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
