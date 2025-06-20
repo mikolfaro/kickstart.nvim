@@ -423,6 +423,13 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sF', function ()
+        builtin.find_files({
+          hidden = true,
+          no_ignore = true,
+          no_ignore_parent = true,
+        })
+      end, { desc = '[S]earch [F]iles, include ignored files' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -700,7 +707,7 @@ require('lazy').setup({
               {
                 name = "@vue/typescript-plugin",
                 -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
-                location = os.getenv("NVM_BIN") .. "/../lib/node_modules/@vue/typescript-plugin",
+                location = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/@vue/typescript-plugin"),
                 languages = {"javascript", "typescript", "vue"},
               },
             },
@@ -717,7 +724,7 @@ require('lazy').setup({
           filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
           init_options = {
             typescript = {
-              tsdk = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/typescript/lib"
+              tsdk = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/typescript/lib")
             }
           }
         }

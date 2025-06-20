@@ -13,7 +13,7 @@ return { -- Lsp config
                 -- npm install -g intelephense
                 "intelephense",
                 "lua_ls", -- TODO expand configs https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#lua_ls
-                -- em install ruby-lsp
+                -- gem install ruby-lsp
                 "ruby_lsp",
                 "rust_analyzer",
                 -- rustup component add rust-analyzer
@@ -35,7 +35,7 @@ return { -- Lsp config
                         {
                             name = "@vue/typescript-plugin",
                             -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
-                            location = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/@vue/typescript-plugin",
+                            location = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/@vue/typescript-plugin"),
                             languages = {"javascript", "typescript", "vue"},
                         },
                     },
@@ -52,7 +52,7 @@ return { -- Lsp config
                 filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
                 init_options = {
                     typescript = {
-                        tsdk = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/typescript/lib"
+                        tsdk = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/typescript/lib")
                     }
                 }
             }
