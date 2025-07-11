@@ -21,11 +21,18 @@ return {
     end,
   },
 
+  {
+    'rebelot/kanagawa.nvim',
+    config = function ()
+      vim.cmd.colorscheme 'kanagawa-dragon'
+    end,
+  },
+
   { -- Darcula Theme
     'doums/darcula',
     config = function()
       -- Load the color scheme
-      vim.cmd.colorscheme 'darcula'
+      -- vim.cmd.colorscheme 'darcula'
     end,
   },
 
