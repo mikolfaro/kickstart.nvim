@@ -110,6 +110,10 @@ vim.o.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.o.showmode = false
 
+-- Expand tabs
+vim.opt.expandtab = true
+vim.opt.softtabstop = 2
+
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -173,14 +177,11 @@ vim.o.confirm = true
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- Directory path view
-vim.keymap.set('n', '<leader>pv', vim.cmd.Ex, { desc = 'Show current [p]ath [v]iew' })
-
 -- Diagnostic keymaps
 -- In same window
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 -- Global
-vim.keymap.set('n','<C-q>', vim.diagnostic.setqflist, { desc = 'Open global diagnostic [Q]uickfix list' })
+-- vim.keymap.set('n','<C-q>', vim.diagnostic.setqflist, { desc = 'Open global diagnostic [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -191,10 +192,10 @@ vim.keymap.set('n','<C-q>', vim.diagnostic.setqflist, { desc = 'Open global diag
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -217,6 +218,15 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- See `:help quickfix` for further info
 vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>')
 vim.keymap.set('n', '<M-k>', '<cmd>cprev<CR>')
+
+-- Yank buffer absolute path
+vim.keymap.set('n', '<leader>yp', function()
+  vim.fn.setreg('+', vim.fn.expand('%'))
+end, { desc = 'Yank relative path of current buffer' })
+
+vim.keymap.set('n', '<leader>yP', function()
+  vim.fn.setreg('+', vim.fn.expand('%:p'))
+end, { desc = 'Yank absolute path to buffer' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -442,6 +452,13 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sF', function ()
+        builtin.find_files({
+          hidden = true,
+          no_ignore = true,
+          no_ignore_parent = true,
+        })
+      end, { desc = '[S]earch [F]iles, include ignored files' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -685,7 +702,7 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -696,6 +713,10 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+
+        -- golangci_lint_ls = {
+        --   cmd = vim.fn.expand(os.getenv("HOME") .. "/go/bin/golangci-lint-langserver"),
+        -- },
 
         lua_ls = {
           -- cmd = { ... },
@@ -711,6 +732,67 @@ require('lazy').setup({
             },
           },
         },
+
+        phpactor = {
+          cmd = { "phpactor", "language-server" },
+        },
+
+        rust_analyzer = {
+          -- rustup component add rust-analyzer
+        },
+
+        tailwindcss = {
+          -- npm install -g @tailwindcss/language-server
+          tailwindCSS = {
+            classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
+            includeLanguages = {
+              eelixir = "html-eex",
+              eruby = "erb",
+              htmlangular = "html",
+              templ = "html",
+              volar = "vue",
+            },
+            lint = {
+              cssConflict = "warning",
+              invalidApply = "error",
+              invalidConfigPath = "error",
+              invalidScreen = "error",
+              invalidTailwindDirective = "error",
+              invalidVariant = "error",
+              recommendedVariantOrder = "warning"
+            },
+            validate = true
+          }
+        },
+
+        ts_ls = {
+          init_options = {
+            plugins = {
+              {
+                name = "@vue/typescript-plugin",
+                -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
+                location = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/@vue/typescript-plugin"),
+                languages = {"javascript", "typescript", "vue"},
+              },
+            },
+          },
+          filetypes = {
+            "javascript",
+            "typescript",
+            "vue",
+          },
+        },
+
+        volar = {
+          -- npm install -g @vue/language-server
+          filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+          init_options = {
+            typescript = {
+              tsdk = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/typescript/lib")
+            }
+          }
+        }
+
       }
 
       -- Ensure the servers and tools above are installed
@@ -964,7 +1046,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 
+      ensure_installed = {
         'bash', 'c', 'css', 'diff', 'html', 'javascript', 'lua', 'luadoc', 
         'markdown', 'markdown_inline', 'query', 'scss', 'typescript', 'vim',
         'vimdoc', 'vue'
@@ -986,6 +1068,26 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+    config = function(plug, config)
+      -- https://github.com/EmranMR/tree-sitter-blade/discussions/19
+      local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+      parser_config.blade = {
+        install_info = {
+          url = "https://github.com/EmranMR/tree-sitter-blade",
+          files = {"src/parser.c"},
+          branch = "main",
+        },
+        filetype = "blade"
+      }
+
+      vim.filetype.add({
+        pattern = {
+          ['.*%.blade%.php'] = 'blade',
+        }
+      })
+
+      require(plug.main).setup(config);
+    end,
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
@@ -1002,7 +1104,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -1035,9 +1137,6 @@ require('lazy').setup({
     },
   },
 })
-
-vim.o.expandtab = true
-vim.o.shiftwidth = 4
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

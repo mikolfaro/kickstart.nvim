@@ -13,9 +13,15 @@ return { -- Lsp config
                 -- npm install -g intelephense
                 "intelephense",
                 "lua_ls", -- TODO expand configs https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#lua_ls
+                -- go install github.com/nametake/golangci-lint-langserver@latest
+                -- go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+                "golangci_lint_ls",
+                -- go install golang.org/x/tools/gopls@latest
+                "gopls",
+                -- gem install ruby-lsp
+                "ruby_lsp",
                 -- rustup component add rust-analyzer
                 "rust_analyzer",
-                -- rustup component add rust-analyzer
             }
 
             for _, lsp in ipairs(servers) do
@@ -24,13 +30,25 @@ return { -- Lsp config
                 })
             end
 
+            lspconfig.golangci_lint_ls.setup {
+                cmd = { vim.fn.expand(os.getenv("HOME") .. "/go/bin/golangci-lint-langserver") }
+            }
+
+            lspconfig.gopls.setup {
+                cmd = { vim.fn.expand(os.getenv("HOME") .. "/go/bin/gopls") }
+            }
+
+            lspconfig.rust_analyzer.setup {
+                checkOnSave = false
+            }
+
             lspconfig.ts_ls.setup{
                 init_options = {
                     plugins = {
                         {
                             name = "@vue/typescript-plugin",
                             -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
-                            location = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/@vue/typescript-plugin",
+                            location = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/@vue/typescript-plugin"),
                             languages = {"javascript", "typescript", "vue"},
                         },
                     },
@@ -47,7 +65,7 @@ return { -- Lsp config
                 filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
                 init_options = {
                     typescript = {
-                        tsdk = os.getenv("HOME") .. "/.nvm/versions/node/v22.11.0/lib/node_modules/typescript/lib"
+                        tsdk = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/typescript/lib")
                     }
                 }
             }
