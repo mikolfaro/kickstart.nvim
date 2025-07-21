@@ -7,9 +7,8 @@ return { -- Lsp config
         dependencies = { "pmizio/typescript-tools.nvim" },
 
         config = function ()
-            local lspconfig = require "lspconfig"
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local servers = {
+                "clangd",
                 -- npm install -g intelephense
                 "intelephense",
                 "lua_ls", -- TODO expand configs https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md#lua_ls
@@ -22,77 +21,81 @@ return { -- Lsp config
                 "ruby_lsp",
                 -- rustup component add rust-analyzer
                 "rust_analyzer",
+                "ts_ls",
             }
 
-            for _, lsp in ipairs(servers) do
-                lspconfig[lsp].setup({
-                    capabilities = capabilities,
-                })
-            end
+            -- for _, lsp in ipairs(servers) do
+            --     vim.lsp.config(lsp, {
+            --         settings = {
+            --             [lsp] = {},
+            --         }
+            --     })
+            -- end
 
-            lspconfig.golangci_lint_ls.setup {
-                cmd = { vim.fn.expand(os.getenv("HOME") .. "/go/bin/golangci-lint-langserver") }
-            }
-
-            lspconfig.gopls.setup {
-                cmd = { vim.fn.expand(os.getenv("HOME") .. "/go/bin/gopls") }
-            }
-
-            lspconfig.rust_analyzer.setup {
-                checkOnSave = false
-            }
-
-            lspconfig.ts_ls.setup{
-                init_options = {
-                    plugins = {
-                        {
-                            name = "@vue/typescript-plugin",
-                            -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
-                            location = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/@vue/typescript-plugin"),
-                            languages = {"javascript", "typescript", "vue"},
-                        },
-                    },
+           vim.lsp.config('rust_analyzer', {
+                -- Server-specific settings. See `:help lspconfig-setup`
+                settings = {
+                    ['rust-analyzer'] = { checkOnSave = false },
                 },
-                filetypes = {
-                    "javascript",
-                    "typescript",
-                    "vue",
-                },
-            }
+            })
 
-            -- npm install -g @vue/language-server
-            lspconfig.volar.setup{
-                filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
-                init_options = {
-                    typescript = {
-                        tsdk = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/typescript/lib")
+            vim.lsp.config('ts_ls', {
+                settings = {
+                    ['ts_ls'] = {
+                        init_options = {
+                            plugins = {
+                                {
+                                    name = "@vue/typescript-plugin",
+                                    -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
+                                    location = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/@vue/typescript-plugin"),
+                                    languages = {"javascript", "typescript", "vue"},
+                                },
+                                                        },
+                                                },
+                                                filetypes = {
+                                                        "javascript",
+                                                        "typescript",
+                                                        "vue",
+                                                },
                     }
                 }
-            }
+            })
 
-            -- npm install -g @tailwindcss/language-server
-            lspconfig.tailwindcss.setup{
-                tailwindCSS = {
-                    classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
-                    includeLanguages = {
-                        eelixir = "html-eex",
-                        eruby = "erb",
-                        htmlangular = "html",
-                        templ = "html",
-                        volar = "vue",
-                    },
-                    lint = {
-                        cssConflict = "warning",
-                        invalidApply = "error",
-                        invalidConfigPath = "error",
-                        invalidScreen = "error",
-                        invalidTailwindDirective = "error",
-                        invalidVariant = "error",
-                        recommendedVariantOrder = "warning"
-                    },
-                    validate = true
-                }
-            }
+            -- -- npm install -g @vue/language-server
+            -- lspconfig.volar.setup{
+            --     filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+            --     init_options = {
+            --         typescript = {
+            --             tsdk = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/typescript/lib")
+            --         }
+            --     }
+            -- }
+            --
+            -- -- npm install -g @tailwindcss/language-server
+            -- lspconfig.tailwindcss.setup{
+            --     tailwindCSS = {
+            --         classAttributes = { "class", "className", "class:list", "classList", "ngClass" },
+            --         includeLanguages = {
+            --             eelixir = "html-eex",
+            --             eruby = "erb",
+            --             htmlangular = "html",
+            --             templ = "html",
+            --             volar = "vue",
+            --         },
+            --         lint = {
+            --             cssConflict = "warning",
+            --             invalidApply = "error",
+            --             invalidConfigPath = "error",
+            --             invalidScreen = "error",
+            --             invalidTailwindDirective = "error",
+            --             invalidVariant = "error",
+            --             recommendedVariantOrder = "warning"
+            --         },
+            --         validate = true
+            --     }
+            -- }
+
+           vim.lsp.enable(servers)
         end
     }
 }
