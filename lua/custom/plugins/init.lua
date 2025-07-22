@@ -20,6 +20,9 @@ end, {
 })
 
 -- Folder view
+vim.keymap.set('n', '<leader>pv', '<cmd>Explore<CR>', {
+        desc = 'Open current file directory'
+})
 vim.keymap.set('n', '<leader>pV', '<cmd>Vexplore<CR>', {
         desc = 'Open current file directory in new tab'
 })
