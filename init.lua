@@ -216,17 +216,6 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 --  Use ALT+<jk> to switch between quickfix entries
 --
 -- See `:help quickfix` for further info
-vim.keymap.set('n', '<M-j>', '<cmd>cnext<CR>')
-vim.keymap.set('n', '<M-k>', '<cmd>cprev<CR>')
-
--- Yank buffer absolute path
-vim.keymap.set('n', '<leader>yp', function()
-  vim.fn.setreg('+', vim.fn.expand('%'))
-end, { desc = 'Yank relative path of current buffer' })
-
-vim.keymap.set('n', '<leader>yP', function()
-  vim.fn.setreg('+', vim.fn.expand('%:p'))
-end, { desc = 'Yank absolute path to buffer' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
