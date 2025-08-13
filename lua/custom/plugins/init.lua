@@ -49,6 +49,9 @@ vim.keymap.set('n', '<leader>gh', function ()
   require("telescope").extensions.git_file_history.git_file_history()
 end, { desc = 'Browse git history of current buffer' })
 
+-- LSP Rename ???
+vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename)
+
 return {
 
   { -- Autosave
@@ -62,8 +65,37 @@ return {
 
   {
     'rebelot/kanagawa.nvim',
-    config = function ()
-      vim.cmd.colorscheme 'kanagawa-dragon'
+    config = function()
+      -- Function to detect if system is using light theme
+      local function is_system_light_theme()
+        local handle = io.popen('gsettings get org.gnome.desktop.interface gtk-theme 2>/dev/null')
+        if handle then
+          local result = handle:read('*a'):gsub('\n', ''):gsub("'", '')
+          handle:close()
+          return result:lower():find('light') ~= nil
+        end
+        return false
+      end
+      
+      local current_theme = nil
+      
+      -- Function to update theme if needed
+      local function update_theme()
+        local is_light = is_system_light_theme()
+        local new_theme = is_light and 'kanagawa-lotus' or 'kanagawa-dragon'
+        
+        if current_theme ~= new_theme then
+          vim.cmd.colorscheme(new_theme)
+          current_theme = new_theme
+        end
+      end
+      
+      -- Set initial theme
+      update_theme()
+      
+      -- Watch for changes every 5 seconds
+      local timer = vim.loop.new_timer()
+      timer:start(5000, 5000, vim.schedule_wrap(update_theme))
     end,
   },
 
