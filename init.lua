@@ -113,6 +113,8 @@ vim.o.showmode = false
 -- Expand tabs
 vim.opt.expandtab = true
 vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
