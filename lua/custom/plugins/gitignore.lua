@@ -6,6 +6,8 @@ return {
         },
         config = function()
             require('gitignore')
+
+            vim.g.gitignore_nvim_overwrite = false
         end,
         cmd = "Gitignore",
         lazy = true
