@@ -49,6 +49,11 @@ vim.keymap.set('n', '<leader>gh', function ()
   require("telescope").extensions.git_file_history.git_file_history()
 end, { desc = 'Browse git history of current buffer' })
 
+-- Stage current buffer changes
+vim.keymap.set('n', '<leader>ga', '<cmd>Git add %<CR>', {
+  desc = 'Add current buffer changes'
+})
+
 -- LSP Rename ???
 vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename)
 
