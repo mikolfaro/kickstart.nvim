@@ -3,6 +3,7 @@ return {
         "rest-nvim/rest.nvim",
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
+            "nvim-neotest/nvim-nio",
             opts = function (_, opts)
                 vim.bo.formatexpr = ""
                 vim.bo.formatprg = "jq"

@@ -44,6 +44,10 @@ vim.keymap.set('n', '<leader>yP', function()
   vim.fn.setreg('+', vim.fn.expand('%:p'))
 end, { desc = 'Yank absolute path to buffer' })
 
+vim.keymap.set('n', '<leader>ga', ':Git add %<CR>', {
+        desc = 'Add current file to git index'
+})
+
 -- Open buffer git history via telescope-git-file-history.nvim
 vim.keymap.set('n', '<leader>gh', function ()
   require("telescope").extensions.git_file_history.git_file_history()

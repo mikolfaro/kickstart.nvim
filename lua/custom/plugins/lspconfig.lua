@@ -47,7 +47,7 @@ return { -- Lsp config
                                 {
                                     name = "@vue/typescript-plugin",
                                     -- npm install -g @vue/typescript-plugin typescript-language-server typescript 
-                                    location = vim.fn.expand(os.getenv("NVM_BIN") .. "/../lib/node_modules/@vue/typescript-plugin"),
+                                    location = vim.fn.expand(os.getenv("HOME") .. "/.local/share/mise/installs/node/25/lib/node_modules/@vue/typescript-plugin"),
                                     languages = {"javascript", "typescript", "vue"},
                                 },
                                                         },
